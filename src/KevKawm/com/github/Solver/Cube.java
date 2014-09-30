@@ -1,4 +1,4 @@
-package TheAmazingAtheists.com.github.Solver;
+package KevKawm.com.github.Solver;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -9,8 +9,8 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import TheAmazingAtheists.com.github.CubeSolver.Display;
-import TheAmazingAtheists.com.github.CubeSolver.TileColor;
+import KevKawm.com.github.CubeSolver.Display;
+import KevKawm.com.github.CubeSolver.TileColor;
 
 public class Cube implements MouseListener{
 

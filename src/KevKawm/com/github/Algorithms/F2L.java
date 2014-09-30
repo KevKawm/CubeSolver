@@ -1,4 +1,4 @@
-package TheAmazingAtheists.com.github.Algorithms;
+package KevKawm.com.github.Algorithms;
 
 abstract public interface F2L{
 	

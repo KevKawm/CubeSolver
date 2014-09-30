@@ -1,9 +1,9 @@
-package TheAmazingAtheists.com.github.Solver;
+package KevKawm.com.github.Solver;
 
 import java.util.List;
 
-import TheAmazingAtheists.com.github.Algorithms.F2L;
-import TheAmazingAtheists.com.github.CubeSolver.TileColor;
+import KevKawm.com.github.Algorithms.F2L;
+import KevKawm.com.github.CubeSolver.TileColor;
 
 public class F2LSolver implements Solver, F2L {
 

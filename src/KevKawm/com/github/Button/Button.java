@@ -1,4 +1,4 @@
-package TheAmazingAtheists.com.github.Button;
+package KevKawm.com.github.Button;
 
 import java.awt.Dimension;
 import java.awt.Graphics;

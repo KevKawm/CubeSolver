@@ -1,4 +1,4 @@
-package TheAmazingAtheists.com.github.CubeSolver;
+package KevKawm.com.github.CubeSolver;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;

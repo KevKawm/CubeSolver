@@ -1,4 +1,4 @@
-package TheAmazingAtheists.com.github.Algorithms;
+package KevKawm.com.github.Algorithms;
 
 public interface PLL {
 

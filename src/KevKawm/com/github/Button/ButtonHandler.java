@@ -1,4 +1,4 @@
-package TheAmazingAtheists.com.github.Button;
+package KevKawm.com.github.Button;
 
 import java.awt.Cursor;
 import java.awt.Graphics;
@@ -8,7 +8,7 @@ import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import TheAmazingAtheists.com.github.CubeSolver.Display;
+import KevKawm.com.github.CubeSolver.Display;
 
 public class ButtonHandler implements MouseListener, MouseMotionListener {
 

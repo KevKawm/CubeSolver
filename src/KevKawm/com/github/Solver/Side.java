@@ -1,4 +1,4 @@
-package TheAmazingAtheists.com.github.Solver;
+package KevKawm.com.github.Solver;
 
 public enum Side {
 	

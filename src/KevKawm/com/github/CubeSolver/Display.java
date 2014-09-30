@@ -1,4 +1,4 @@
-package TheAmazingAtheists.com.github.CubeSolver;
+package KevKawm.com.github.CubeSolver;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -9,9 +9,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import TheAmazingAtheists.com.github.Button.Button;
-import TheAmazingAtheists.com.github.Button.ButtonHandler;
-import TheAmazingAtheists.com.github.Solver.Cube;
+import KevKawm.com.github.Button.Button;
+import KevKawm.com.github.Button.ButtonHandler;
+import KevKawm.com.github.Solver.Cube;
 
 public class Display extends JPanel implements Runnable {
 	private static final long serialVersionUID = 1L;

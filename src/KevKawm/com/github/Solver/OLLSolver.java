@@ -1,9 +1,9 @@
-package TheAmazingAtheists.com.github.Solver;
+package KevKawm.com.github.Solver;
 
 import java.util.List;
 
-import TheAmazingAtheists.com.github.Algorithms.OLL;
-import TheAmazingAtheists.com.github.CubeSolver.TileColor;
+import KevKawm.com.github.Algorithms.OLL;
+import KevKawm.com.github.CubeSolver.TileColor;
 
 public class OLLSolver implements Solver, OLL {
 

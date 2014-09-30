@@ -1,6 +1,6 @@
-package TheAmazingAtheists.com.github.Solver;
+package KevKawm.com.github.Solver;
 
-import TheAmazingAtheists.com.github.CubeSolver.TileColor;
+import KevKawm.com.github.CubeSolver.TileColor;
 
 public class CrossSolver implements Solver{
 

@@ -1,4 +1,4 @@
-package TheAmazingAtheists.com.github.CubeSolver;
+package KevKawm.com.github.CubeSolver;
 
 import java.awt.Color;
 
