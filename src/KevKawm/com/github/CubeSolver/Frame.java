@@ -6,8 +6,8 @@ import javax.swing.JFrame;
 public class Frame extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
-	public final int width = 800;
-	public final int height = 600;
+	public int width = 800;
+	public int height = 600;
 	
 	ClassLoader cl = this.getClass().getClassLoader();
 	
@@ -27,7 +27,7 @@ public class Frame extends JFrame {
 		this.setResizable(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
-		this.setIconImage(new ImageIcon(cl.getResource("TheAmazingAtheists/com/github/Assets/Icon.png")).getImage());
+		this.setIconImage(new ImageIcon(cl.getResource("KevKawm/com/github/Assets/Icon.png")).getImage());
 	}
 	
 }
