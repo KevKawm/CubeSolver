@@ -22,11 +22,6 @@ public class ButtonHandler implements MouseListener, MouseMotionListener {
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		for (Button b : buttons) {
-			if (e.getPoint().x > b.p.x && e.getPoint().x < b.p.x + b.d.width && e.getPoint().y > b.p.y && e.getPoint().y < b.p.y + b.d.height) {
-				b.runnable.run();
-			}
-		}
 	}
 
 	public void add(Button b) {
@@ -47,6 +42,11 @@ public class ButtonHandler implements MouseListener, MouseMotionListener {
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		for (Button b : buttons) {
+			if (e.getPoint().x > b.p.x && e.getPoint().x < b.p.x + b.d.width && e.getPoint().y > b.p.y && e.getPoint().y < b.p.y + b.d.height) {
+				b.runnable.run();
+			}
+		}
 	}
 
 	public void drawButtons(Graphics g) {
