@@ -439,11 +439,12 @@ public class Cube implements MouseListener{
 						turn(getColor(cubie));
 					}
 				}
-				if (display.turns.startsWith(",")) {
-					display.turns = display.turns.substring(1);
-				}
+				display.moves.add("t");
+				if (display.turns.startsWith(",")) display.turns = display.turns.substring(1);
 			} else {
 				display.changedCubie = true;
+				display.moves.add("c");
+				display.cubieChanges.add(Integer.toString(cubie[0]) + "," + Integer.toString(cubie[1]) + "," + Integer.toString(cubie[2]) + "," + Integer.toString(e.getButton()));
 				changeColor(cubie, e.getButton());
 			}
 		}
@@ -592,6 +593,20 @@ public class Cube implements MouseListener{
 		}
 		ret = ret.replace(",,", ",");
 		return compact(ret);
+	}
+	
+	public void undo() {
+		if (!display.moves.isEmpty()) {
+			if (display.moves.get(display.moves.size() - 1).equals("t")) {
+				doAlgorithm(invertAlgorithm(display.turns.split(",")[display.turns.split(",").length - 1]));
+				display.turns = display.turns.substring(0, display.turns.lastIndexOf(",") - 1);
+			} else {
+				changeColor(createArray(Integer.parseInt(display.cubieChanges.get(display.cubieChanges.size() - 1).split(",")[0]), Integer.parseInt(display.cubieChanges.get(display.cubieChanges.size() - 1).split(",")[1]), Integer.parseInt(display.cubieChanges.get(display.cubieChanges.size() - 1).split(",")[2])), 4 - Integer.parseInt(display.cubieChanges.get(display.cubieChanges.size() - 1).split(",")[3]));
+				display.cubieChanges.remove(display.cubieChanges.size() - 1);
+			}
+			display.moves.remove(display.moves.size() - 1);
+		}
+		return;
 	}
 
 	public String solve() {

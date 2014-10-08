@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -28,7 +30,9 @@ public class Display extends JPanel implements Runnable {
 	public String turns = "";
 
 	public boolean changedCubie = false;
-
+	
+	public List<String> cubieChanges = new ArrayList<String>(), moves = new ArrayList<String>();
+	
 	ClassLoader cl = this.getClass().getClassLoader();
 
 	final Display display = this;
