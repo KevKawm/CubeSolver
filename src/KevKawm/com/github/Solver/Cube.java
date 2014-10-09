@@ -605,6 +605,7 @@ public class Cube implements MouseListener{
 				display.cubieChanges.remove(display.cubieChanges.size() - 1);
 			}
 			display.moves.remove(display.moves.size() - 1);
+			display.changedCubie = display.cubieChanges.isEmpty() ? false : true;
 		}
 		return;
 	}
