@@ -121,7 +121,9 @@ public class Display extends JPanel implements Runnable {
 					display.removeMouseListener(cube);
 					cube = new Cube(TileColor.blue, TileColor.yellow, display);
 					display.addMouseListener(cube);
+					display.moves = new ArrayList<String>();
 					display.turns = "";
+					display.cubieChanges = new ArrayList<String>();
 					display.changedCubie = false;
 				}
 			}
