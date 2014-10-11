@@ -30,8 +30,9 @@ public class Display extends JPanel implements Runnable {
 	public String turns = "";
 
 	public boolean changedCubie = false;
-	
-	public List<String> cubieChanges = new ArrayList<String>(), moves = new ArrayList<String>();
+
+	//public List<String> cubieChanges = new ArrayList<String>(), moves = new ArrayList<String>();
+	public List<String> actions = new ArrayList<String>();
 	
 	ClassLoader cl = this.getClass().getClassLoader();
 
@@ -113,30 +114,41 @@ public class Display extends JPanel implements Runnable {
 
 		Image rbImg = new ImageIcon(cl.getResource("KevKawm/com/github/Assets/Reset_Button.png")).getImage();
 		Image rbHoverImg = new ImageIcon(cl.getResource("KevKawm/com/github/Assets/Hover_Reset_Button.png")).getImage();
-		
-		bh.add(new Button(new Point(0,0),new Dimension(100,50),new Runnable(){
+
+		bh.add(new Button(new Point(0, 0), new Dimension(100, 50), new Runnable() {
 			@Override
-			public void run(){
-				if(!cube.isSolved()){
+			public void run() {
+				if (!cube.isSolved()) {
 					display.removeMouseListener(cube);
 					cube = new Cube(TileColor.blue, TileColor.yellow, display);
 					display.addMouseListener(cube);
-					display.moves = new ArrayList<String>();
+					//display.moves = new ArrayList<String>();
 					display.turns = "";
-					display.cubieChanges = new ArrayList<String>();
+					//display.cubieChanges = new ArrayList<String>();
+					display.actions.clear();
 					display.changedCubie = false;
 				}
 			}
-		},rbImg,rbHoverImg));
-		
+		}, rbImg, rbHoverImg));
+
+		Image ubImg = new ImageIcon(cl.getResource("KevKawm/com/github/Assets/Undo_Button.png")).getImage();
+		Image ubHoverImg = new ImageIcon(cl.getResource("KevKawm/com/github/Assets/Hover_Undo_Button.png")).getImage();
+
+		bh.add(new Button(new Point(0, 0), new Dimension(100, 50), new Runnable() {
+			@Override
+			public void run() {
+				cube.undo();
+			}
+		}, ubImg, ubHoverImg));
+
 		this.addMouseListener(bh);
 		this.addMouseMotionListener(bh);
-		
+
 		moveButtons();
-		
+
 		while (true) {
 			repaint();
-			if(frame.getWidth() != frame.width || frame.getHeight() != frame.height){
+			if (frame.getWidth() != frame.width || frame.getHeight() != frame.height) {
 				moveButtons();
 				frame.width = frame.getWidth();
 				frame.height = frame.getHeight();
@@ -149,6 +161,8 @@ public class Display extends JPanel implements Runnable {
 		bh.buttons.get(0).d = new Dimension(frame.getWidth() / 5, frame.getWidth() / 10);
 		bh.buttons.get(1).d = new Dimension(frame.getWidth() / 5, frame.getWidth() / 10);
 		bh.buttons.get(1).p = new Point(((int) (frame.getWidth() / 5 * 0.2)), 50);
+		bh.buttons.get(2).d = new Dimension(frame.getWidth() / 5, frame.getWidth() / 10);
+		bh.buttons.get(2).p = new Point(((int) (frame.getWidth() / 5 * 0.2)), frame.getHeight() - 100 - bh.buttons.get(2).d.height);
 	}
 
 	@Override
@@ -157,7 +171,7 @@ public class Display extends JPanel implements Runnable {
 		cube.render(g, frame.getSize());
 		bh.drawButtons(g);
 		g.setColor(Color.BLACK);
-		g.drawString("Made by KevKawm",frame.width - 125, frame.height - 45);
+		g.drawString("Made by KevKawm", frame.width - 125, frame.height - 45);
 	}
 
 }

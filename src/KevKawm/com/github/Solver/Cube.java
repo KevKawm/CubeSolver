@@ -425,26 +425,30 @@ public class Cube implements MouseListener{
 		int[] cubie = getCubie(p);
 		if (cubie != null) {
 			if (cubie[1] == 1 && cubie[2] == 1) {
+				String turn = "";
 				if (e.getButton() == 1) {
-					display.turns += "," + this.getSide(getColor(cubie)).getName();
+					turn = this.getSide(getColor(cubie)).getName();
 					turn(getColor(cubie));
 				} else if (e.getButton() == 2) {
-					display.turns += "," + this.getSide(getColor(cubie)).getName() + "2";
+					turn = this.getSide(getColor(cubie)).getName() + "2";
 					for (int i = 0; i < 2; i++) {
 						turn(getColor(cubie));
 					}
 				} else if (e.getButton() == 3) {
-					display.turns += "," + this.getSide(getColor(cubie)).getName() + "I";
+					turn = this.getSide(getColor(cubie)).getName() + "I";
 					for (int i = 0; i < 3; i++) {
 						turn(getColor(cubie));
 					}
 				}
-				display.moves.add("t");
+				display.turns += "," + turn;
+				//display.moves.add("t");
+				display.actions.add("t:" + turn);
 				if (display.turns.startsWith(",")) display.turns = display.turns.substring(1);
 			} else {
 				display.changedCubie = true;
-				display.moves.add("c");
-				display.cubieChanges.add(Integer.toString(cubie[0]) + "," + Integer.toString(cubie[1]) + "," + Integer.toString(cubie[2]) + "," + Integer.toString(e.getButton()));
+				//display.moves.add("c");
+				//display.cubieChanges.add(Integer.toString(cubie[0]) + "," + Integer.toString(cubie[1]) + "," + Integer.toString(cubie[2]) + "," + Integer.toString(e.getButton()));
+				display.actions.add("c:" + cubie[0] + "," + cubie[1] + "," + cubie[2] + "," + e.getButton());
 				changeColor(cubie, e.getButton());
 			}
 		}
@@ -595,21 +599,43 @@ public class Cube implements MouseListener{
 		return compact(ret);
 	}
 	
-	public void undo() {
-		if (!display.moves.isEmpty()) {
-			if (display.moves.get(display.moves.size() - 1).equals("t")) {
-				doAlgorithm(invertAlgorithm(display.turns.split(",")[display.turns.split(",").length - 1]));
-				display.turns = display.turns.substring(0, display.turns.lastIndexOf(",") - 1);
-			} else {
-				changeColor(createArray(Integer.parseInt(display.cubieChanges.get(display.cubieChanges.size() - 1).split(",")[0]), Integer.parseInt(display.cubieChanges.get(display.cubieChanges.size() - 1).split(",")[1]), Integer.parseInt(display.cubieChanges.get(display.cubieChanges.size() - 1).split(",")[2])), 4 - Integer.parseInt(display.cubieChanges.get(display.cubieChanges.size() - 1).split(",")[3]));
-				display.cubieChanges.remove(display.cubieChanges.size() - 1);
-			}
-			display.moves.remove(display.moves.size() - 1);
-			display.changedCubie = display.cubieChanges.isEmpty() ? false : true;
-		}
-		return;
-	}
+//	public void undo() {
+//		if (!display.moves.isEmpty()) {
+//			if (display.moves.get(display.moves.size() - 1).equals("t")) {
+//				doAlgorithm(invertAlgorithm(display.turns.split(",")[display.turns.split(",").length - 1]));
+//				display.turns = display.turns.substring(0, display.turns.lastIndexOf(",") - 1);
+//			} else {
+//				changeColor(createArray(Integer.parseInt(display.cubieChanges.get(display.cubieChanges.size() - 1).split(",")[0]), Integer.parseInt(display.cubieChanges.get(display.cubieChanges.size() - 1).split(",")[1]), Integer.parseInt(display.cubieChanges.get(display.cubieChanges.size() - 1).split(",")[2])), 4 - Integer.parseInt(display.cubieChanges.get(display.cubieChanges.size() - 1).split(",")[3]));
+//				display.cubieChanges.remove(display.cubieChanges.size() - 1);
+//			}
+//			display.moves.remove(display.moves.size() - 1);
+//			display.changedCubie = display.cubieChanges.isEmpty() ? false : true;
+//		}
+//		return;
+//	}
 
+	public void undo(){
+		if(!display.actions.isEmpty()){
+			if(display.actions.get(display.actions.size() - 1).startsWith("t:")){
+				String move = invertAlgorithm(display.actions.get(display.actions.size() - 1).substring(2));
+				doAlgorithm(move);
+				display.turns += move;
+			} else {
+				String c = display.actions.get(display.actions.size() - 1).substring(2);
+				String[] cs = c.split(",");
+				changeColor(createArray(Integer.parseInt(cs[0]), Integer.parseInt(cs[1]), Integer.parseInt(cs[2])),4 - Integer.parseInt(cs[3]));
+				boolean b = false;
+				for(String s : display.actions){
+					if(s.startsWith("c:")){
+						b = true;
+					}
+				}
+				display.changedCubie = b;
+			}
+			display.actions.remove(display.actions.size() - 1);
+		}
+	}
+	
 	public String solve() {
 		display.turns = "";
 		display.changedCubie = false;
