@@ -96,6 +96,7 @@ public class Display extends JPanel implements Runnable {
 							if (cube.isSolved()) {
 								JOptionPane.showMessageDialog(null, "Make sure you are holding the cube with\n BLUE as face and YELLOW as top", "Solve", 1);
 								JOptionPane.showMessageDialog(null, out.endsWith(",") ? out.substring(0, out.length() - 1) : out, "Solve", 1);
+								display.actions.clear();
 							} else {
 								display.removeMouseListener(cube);
 								cube = cubeClone.clone();
@@ -107,6 +108,7 @@ public class Display extends JPanel implements Runnable {
 						}
 					} catch (Exception e) {
 						JOptionPane.showMessageDialog(null, "An error occured when solving.\nMake sure everything is entered correctly", "Error", 0);
+						e.printStackTrace();
 					}
 				}
 			}

@@ -619,7 +619,7 @@ public class Cube implements MouseListener{
 			if(display.actions.get(display.actions.size() - 1).startsWith("t:")){
 				String move = invertAlgorithm(display.actions.get(display.actions.size() - 1).substring(2));
 				doAlgorithm(move);
-				display.turns += move;
+				display.turns += "," + move;
 			} else {
 				String c = display.actions.get(display.actions.size() - 1).substring(2);
 				String[] cs = c.split(",");
