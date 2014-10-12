@@ -16,7 +16,12 @@ public class Button {
 	boolean hovering = false;
 	
 	public Button(Point p, Dimension d, Runnable runnable, Image img, Image hoverImg){
-		new Button(p,d,runnable,runnable,img,hoverImg);
+		this.left = runnable;
+		this.right = runnable;
+		this.p = p;
+		this.d = d;
+		this.img = img;
+		this.hoverImg = hoverImg;
 	}
 	
 	public Button(Point p, Dimension d, Runnable left, Runnable right, Image img, Image hoverImg){

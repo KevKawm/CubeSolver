@@ -26,9 +26,10 @@ public class Display extends JPanel implements Runnable {
 
 	ButtonHandler bh;
 
-	//public List<String> cubieChanges = new ArrayList<String>(), moves = new ArrayList<String>();
+	// public List<String> cubieChanges = new ArrayList<String>(), moves = new
+	// ArrayList<String>();
 	public List<String> actions = new ArrayList<String>();
-	
+
 	ClassLoader cl = this.getClass().getClassLoader();
 
 	final Display display = this;
@@ -82,6 +83,11 @@ public class Display extends JPanel implements Runnable {
 			public void run() {
 				cube.undo();
 			}
+		}, new Runnable() {
+			@Override
+			public void run() {
+
+			}
 		}, ubImg, ubHoverImg));
 
 		this.addMouseListener(bh);
@@ -117,26 +123,27 @@ public class Display extends JPanel implements Runnable {
 		g.drawString("Made by KevKawm", frame.width - 125, frame.height - 45);
 	}
 
-	public String getTurns(){
+	public String getTurns() {
 		String ret = "";
-		for(String s : actions){
-			if(s.startsWith("t:")){
+		for (String s : actions) {
+			if (s.startsWith("t:")) {
 				s = s.substring(2);
-				ret+= s + ",";
+				ret += s + ",";
 			}
 		}
-		if(ret.length() > 0){
-			return ret.substring(0,ret.length() - 1);
+		if (ret.length() > 0) {
+			return ret.substring(0, ret.length() - 1);
 		} else {
 			return "";
 		}
 	}
-	
-	public boolean changedCubie(){
-		for(String s : actions){
-			if(s.startsWith("c:")) return true;
+
+	public boolean changedCubie() {
+		for (String s : actions) {
+			if (s.startsWith("c:"))
+				return true;
 		}
 		return false;
 	}
-	
+
 }
