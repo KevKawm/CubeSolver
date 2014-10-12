@@ -125,7 +125,11 @@ public class Display extends JPanel implements Runnable {
 				ret+= s + ",";
 			}
 		}
-		return ret.substring(0,ret.length() - 1);
+		if(ret.length() > 0){
+			return ret.substring(0,ret.length() - 1);
+		} else {
+			return "";
+		}
 	}
 	
 	public boolean changedCubie(){

@@ -640,7 +640,7 @@ public class Cube implements MouseListener {
 				String turns = display.getTurns();
 				String[] array1 = str.split(",");
 				String[] array2 = Cube.compact(turns).split(",");
-				if (array1.length > array2.length && cubeClone2.doAlgorithm(invertAlgorithm(compact(turns))).isSolved()) {
+				if (array1.length > array2.length && turns.length() > 0 && cubeClone2.doAlgorithm(invertAlgorithm(compact(turns))).isSolved()) {
 					String str2 = Cube.invertAlgorithm(Cube.compact(turns));
 					array = str2.split(",");
 					doAlgorithm(str2);
@@ -649,7 +649,6 @@ public class Cube implements MouseListener {
 					array = array1;
 					doAlgorithm(str);
 					ret = str;
-					System.out.println(str);
 				}
 				if (array.length > 10) {
 					for (int i = 0; i < array.length; i++) {
