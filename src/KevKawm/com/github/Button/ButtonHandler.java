@@ -44,7 +44,11 @@ public class ButtonHandler implements MouseListener, MouseMotionListener {
 	public void mouseReleased(MouseEvent e) {
 		for (Button b : buttons) {
 			if (e.getPoint().x > b.p.x && e.getPoint().x < b.p.x + b.d.width && e.getPoint().y > b.p.y && e.getPoint().y < b.p.y + b.d.height) {
-				b.runnable.run();
+				if(e.getButton() == 1){
+					b.left.run();
+				} else if(e.getButton() == 3){
+					b.right.run();
+				}
 			}
 		}
 	}

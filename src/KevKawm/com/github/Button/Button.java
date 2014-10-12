@@ -7,7 +7,8 @@ import java.awt.Point;
 
 public class Button {
 
-	public Runnable runnable;
+	public Runnable left;
+	public Runnable right;
 	public Point p;
 	public Dimension d;
 	public Image img;
@@ -15,7 +16,12 @@ public class Button {
 	boolean hovering = false;
 	
 	public Button(Point p, Dimension d, Runnable runnable, Image img, Image hoverImg){
-		this.runnable = runnable;
+		new Button(p,d,runnable,runnable,img,hoverImg);
+	}
+	
+	public Button(Point p, Dimension d, Runnable left, Runnable right, Image img, Image hoverImg){
+		this.left = left;
+		this.right = right;
 		this.p = p;
 		this.d = d;
 		this.img = img;
