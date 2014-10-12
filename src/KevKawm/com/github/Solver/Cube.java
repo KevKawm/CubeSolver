@@ -624,15 +624,15 @@ public class Cube implements MouseListener{
 				String c = display.actions.get(display.actions.size() - 1).substring(2);
 				String[] cs = c.split(",");
 				changeColor(createArray(Integer.parseInt(cs[0]), Integer.parseInt(cs[1]), Integer.parseInt(cs[2])),4 - Integer.parseInt(cs[3]));
-				boolean b = false;
-				for(String s : display.actions){
-					if(s.startsWith("c:")){
-						b = true;
-					}
-				}
-				display.changedCubie = b;
 			}
 			display.actions.remove(display.actions.size() - 1);
+			boolean b = false;
+			for(String s : display.actions){
+				if(s.startsWith("c:")){
+					b = true;
+				}
+			}
+			display.changedCubie = b;
 		}
 	}
 	
