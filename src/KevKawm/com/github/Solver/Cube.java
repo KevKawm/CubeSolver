@@ -9,10 +9,12 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import KevKawm.com.github.CubeSolver.Display;
 import KevKawm.com.github.CubeSolver.TileColor;
 
-public class Cube implements MouseListener{
+public class Cube implements MouseListener {
 
 	public List<List<List<TileColor>>> faces = new ArrayList<List<List<TileColor>>>();
 
@@ -332,7 +334,7 @@ public class Cube implements MouseListener{
 		return (i[1] == 1 || i[2] == 1);
 	}
 
-	public void doAlgorithm(String s) {
+	public Cube doAlgorithm(String s) {
 		if (s.startsWith(","))
 			s = s.substring(1);
 		if (s.endsWith(","))
@@ -342,6 +344,7 @@ public class Cube implements MouseListener{
 			if (sL.length() > 0)
 				turn(Turn.valueOf(sL));
 		}
+		return this;
 	}
 
 	public static List<int[]> getOthers(int[] i) {
@@ -566,17 +569,18 @@ public class Cube implements MouseListener{
 		return algo;
 	}
 
-	public boolean isSolved(){
-		for(int f = 0; f < 6; f++){
-			for(int x = 0; x < 3; x++){
-				for(int y = 0; y < 3; y++){
-					if(!getColor(f,x,y).equals(TileColor.get(f))) return false;
+	public boolean isSolved() {
+		for (int f = 0; f < 6; f++) {
+			for (int x = 0; x < 3; x++) {
+				for (int y = 0; y < 3; y++) {
+					if (!getColor(f, x, y).equals(TileColor.get(f)))
+						return false;
 				}
 			}
 		}
 		return true;
 	}
-	
+
 	public String getSolve() {
 		String ret = "";
 		List<Solver> solvers = new ArrayList<Solver>();
@@ -593,40 +597,89 @@ public class Cube implements MouseListener{
 		return compact(ret);
 	}
 
-	public void undo(){
-		if(!display.actions.isEmpty()){
-			if(display.actions.get(display.actions.size() - 1).startsWith("t:")){
+	public void undo() {
+		if (!display.actions.isEmpty()) {
+			if (display.actions.get(display.actions.size() - 1).startsWith("t:")) {
 				String move = invertAlgorithm(display.actions.get(display.actions.size() - 1).substring(2));
 				doAlgorithm(move);
 			} else {
 				String c = display.actions.get(display.actions.size() - 1).substring(2);
 				String[] cs = c.split(",");
-				changeColor(createArray(Integer.parseInt(cs[0]), Integer.parseInt(cs[1]), Integer.parseInt(cs[2])),4 - Integer.parseInt(cs[3]));
+				changeColor(createArray(Integer.parseInt(cs[0]), Integer.parseInt(cs[1]), Integer.parseInt(cs[2])), 4 - Integer.parseInt(cs[3]));
 			}
 			display.actions.remove(display.actions.size() - 1);
 		}
 	}
-	
-	public String solve() {
-		String ret = getSolve();
-		this.doAlgorithm(getSolve());
-		return ret;
-	}
-	
-	public boolean isPossible(){
-		int[] colors = {0,0,0,0,0,0};
-		for(int f = 0; f < 6; f++){
-			for(int x = 0; x < 3; x++){
-				for(int y = 0; y < 3; y++){
-					colors[getColor(f,x,y).getInt()]++;
+
+	public boolean isPossible() {
+		int[] colors = { 0, 0, 0, 0, 0, 0 };
+		for (int f = 0; f < 6; f++) {
+			for (int x = 0; x < 3; x++) {
+				for (int y = 0; y < 3; y++) {
+					colors[getColor(f, x, y).getInt()]++;
 				}
 			}
 		}
-		for(int i = 0; i < 5; i++){
-			if(colors[i] != colors[i+1]){
+		for (int i = 0; i < 5; i++) {
+			if (colors[i] != colors[i + 1]) {
 				return false;
 			}
 		}
 		return true;
+	}
+
+	public String solve() {
+		String ret = "";
+		try {
+			if (isPossible()) {
+				Cube cubeClone = clone();
+				Cube cubeClone2 = clone();
+				String out = "The solving algorithm is: ";
+				String[] array = {};
+				String str = getSolve();
+				String turns = display.getTurns();
+				String[] array1 = str.split(",");
+				String[] array2 = Cube.compact(turns).split(",");
+				if (array1.length > array2.length && cubeClone2.doAlgorithm(invertAlgorithm(compact(turns))).isSolved()) {
+					String str2 = Cube.invertAlgorithm(Cube.compact(turns));
+					array = str2.split(",");
+					doAlgorithm(str2);
+					ret = str2;
+				} else {
+					array = array1;
+					doAlgorithm(str);
+					ret = str;
+					System.out.println(str);
+				}
+				if (array.length > 10) {
+					for (int i = 0; i < array.length; i++) {
+						if (i % (int) Math.pow(array.length, 1 / 1.5D) == 0) {
+							out += "\n";
+						}
+						out += array[i] + ",";
+					}
+				} else {
+					for (int i = 0; i < array.length; i++) {
+						out += array[i] + ",";
+					}
+				}
+				if (isSolved()) {
+					JOptionPane.showMessageDialog(null, "Make sure you are holding the cube with\n BLUE as face and YELLOW as top", "Solve", 1);
+					JOptionPane.showMessageDialog(null, out.endsWith(",") ? out.substring(0, out.length() - 1) : out, "Solve", 1);
+					display.actions.clear();
+				} else {
+					display.removeMouseListener(display.cube);
+					display.cube = cubeClone.clone();
+					display.addMouseListener(display.cube);
+					JOptionPane.showMessageDialog(null, "An error occured when solving.\nMake sure everything is entered correctly", "Error", 0);
+				}
+			} else {
+				JOptionPane.showMessageDialog(null, "An error occured when solving.\nMake sure everything is entered correctly", "Error", 0);
+			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "An error occured when solving.\nMake sure everything is entered correctly", "Error", 0);
+			e.printStackTrace();
+		}
+		return ret;
 	}
 }

@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import KevKawm.com.github.Button.Button;
@@ -23,7 +22,7 @@ public class Display extends JPanel implements Runnable {
 
 	Thread thread = new Thread(this);
 
-	Cube cube;
+	public Cube cube;
 
 	ButtonHandler bh;
 
@@ -55,56 +54,7 @@ public class Display extends JPanel implements Runnable {
 			@Override
 			public void run() {
 				if (!cube.isSolved()) {
-					try {
-						if (cube.isPossible()) {
-							Cube cubeClone = cube.clone();
-							String out = "The solving algorithm is: ";
-							String[] array = {};
-							if (changedCubie()) {
-								array = cube.solve().split(",");
-							} else {
-								String str = cube.getSolve();
-								String turns = getTurns();
-								String[] array1 = str.split(",");
-								String[] array2 = Cube.compact(turns).split(",");
-								if (array1.length < array2.length) {
-									array = array1;
-									cube.doAlgorithm(str);
-								} else {
-									String str2 = Cube.invertAlgorithm(Cube.compact(turns));
-									array = str2.split(",");
-									cube.doAlgorithm(str2);
-								}
-							}
-							if (array.length > 10) {
-								for (int i = 0; i < array.length; i++) {
-									if (i % (int) Math.pow(array.length, 1 / 1.5D) == 0) {
-										out += "\n";
-									}
-									out += array[i] + ",";
-								}
-							} else {
-								for (int i = 0; i < array.length; i++) {
-									out += array[i] + ",";
-								}
-							}
-							if (cube.isSolved()) {
-								JOptionPane.showMessageDialog(null, "Make sure you are holding the cube with\n BLUE as face and YELLOW as top", "Solve", 1);
-								JOptionPane.showMessageDialog(null, out.endsWith(",") ? out.substring(0, out.length() - 1) : out, "Solve", 1);
-								display.actions.clear();
-							} else {
-								display.removeMouseListener(cube);
-								cube = cubeClone.clone();
-								display.addMouseListener(cube);
-								JOptionPane.showMessageDialog(null, "An error occured when solving.\nMake sure everything is entered correctly", "Error", 0);
-							}
-						} else {
-							JOptionPane.showMessageDialog(null, "An error occured when solving.\nMake sure everything is entered correctly", "Error", 0);
-						}
-					} catch (Exception e) {
-						JOptionPane.showMessageDialog(null, "An error occured when solving.\nMake sure everything is entered correctly", "Error", 0);
-						e.printStackTrace();
-					}
+					cube.solve();
 				}
 			}
 		}, bImg, bHoverImg));
