@@ -26,9 +26,9 @@ public class Display extends JPanel implements Runnable {
 
 	ButtonHandler bh;
 
-	// public List<String> cubieChanges = new ArrayList<String>(), moves = new
-	// ArrayList<String>();
 	public List<String> actions = new ArrayList<String>();
+	
+	public List<String> undoneActions = new ArrayList<String>();
 
 	ClassLoader cl = this.getClass().getClassLoader();
 
@@ -71,6 +71,7 @@ public class Display extends JPanel implements Runnable {
 					cube = new Cube(TileColor.blue, TileColor.yellow, display);
 					display.addMouseListener(cube);
 					display.actions.clear();
+					display.undoneActions.clear();
 				}
 			}
 		}, rbImg, rbHoverImg));
@@ -86,7 +87,7 @@ public class Display extends JPanel implements Runnable {
 		}, new Runnable() {
 			@Override
 			public void run() {
-
+				cube.redo();
 			}
 		}, ubImg, ubHoverImg));
 

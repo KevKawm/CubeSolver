@@ -600,14 +600,28 @@ public class Cube implements MouseListener {
 	public void undo() {
 		if (!display.actions.isEmpty()) {
 			if (display.actions.get(display.actions.size() - 1).startsWith("t:")) {
-				String move = invertAlgorithm(display.actions.get(display.actions.size() - 1).substring(2));
-				doAlgorithm(move);
+				doAlgorithm(invertAlgorithm(display.actions.get(display.actions.size() - 1).substring(2)));
 			} else {
 				String c = display.actions.get(display.actions.size() - 1).substring(2);
 				String[] cs = c.split(",");
 				changeColor(createArray(Integer.parseInt(cs[0]), Integer.parseInt(cs[1]), Integer.parseInt(cs[2])), 4 - Integer.parseInt(cs[3]));
 			}
+			display.undoneActions.add(display.actions.get(display.actions.size() - 1));
 			display.actions.remove(display.actions.size() - 1);
+		}
+	}
+	
+	public void redo() {
+		if (!display.undoneActions.isEmpty()) {
+			if (display.undoneActions.get(display.undoneActions.size() - 1).startsWith("t:")) {
+				doAlgorithm(display.undoneActions.get(display.undoneActions.size() - 1).substring(2));
+			} else {
+				String c = display.undoneActions.get(display.undoneActions.size() - 1).substring(2);
+				String[] cs = c.split(",");
+				changeColor(createArray(Integer.parseInt(cs[0]), Integer.parseInt(cs[1]), Integer.parseInt(cs[2])), Integer.parseInt(cs[3]));
+			}
+			display.actions.add(display.undoneActions.get(display.undoneActions.size() - 1));
+			display.undoneActions.remove(display.undoneActions.get(display.undoneActions.size() - 1));
 		}
 	}
 
@@ -666,6 +680,7 @@ public class Cube implements MouseListener {
 					JOptionPane.showMessageDialog(null, "Make sure you are holding the cube with\n BLUE as face and YELLOW as top", "Solve", 1);
 					JOptionPane.showMessageDialog(null, out.endsWith(",") ? out.substring(0, out.length() - 1) : out, "Solve", 1);
 					display.actions.clear();
+					display.undoneActions.clear();
 				} else {
 					display.removeMouseListener(display.cube);
 					display.cube = cubeClone.clone();
