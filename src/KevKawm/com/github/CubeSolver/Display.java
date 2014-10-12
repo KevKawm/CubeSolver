@@ -27,10 +27,6 @@ public class Display extends JPanel implements Runnable {
 
 	ButtonHandler bh;
 
-	public String turns = "";
-
-	public boolean changedCubie = false;
-
 	//public List<String> cubieChanges = new ArrayList<String>(), moves = new ArrayList<String>();
 	public List<String> actions = new ArrayList<String>();
 	
@@ -64,10 +60,11 @@ public class Display extends JPanel implements Runnable {
 							Cube cubeClone = cube.clone();
 							String out = "The solving algorithm is: ";
 							String[] array = {};
-							if (changedCubie) {
+							if (changedCubie()) {
 								array = cube.solve().split(",");
 							} else {
 								String str = cube.getSolve();
+								String turns = getTurns();
 								String[] array1 = str.split(",");
 								String[] array2 = Cube.compact(turns).split(",");
 								if (array1.length < array2.length) {
@@ -77,8 +74,6 @@ public class Display extends JPanel implements Runnable {
 									String str2 = Cube.invertAlgorithm(Cube.compact(turns));
 									array = str2.split(",");
 									cube.doAlgorithm(str2);
-									turns = "";
-									changedCubie = false;
 								}
 							}
 							if (array.length > 10) {
@@ -124,11 +119,7 @@ public class Display extends JPanel implements Runnable {
 					display.removeMouseListener(cube);
 					cube = new Cube(TileColor.blue, TileColor.yellow, display);
 					display.addMouseListener(cube);
-					//display.moves = new ArrayList<String>();
-					display.turns = "";
-					//display.cubieChanges = new ArrayList<String>();
 					display.actions.clear();
-					display.changedCubie = false;
 				}
 			}
 		}, rbImg, rbHoverImg));
@@ -176,4 +167,22 @@ public class Display extends JPanel implements Runnable {
 		g.drawString("Made by KevKawm", frame.width - 125, frame.height - 45);
 	}
 
+	public String getTurns(){
+		String ret = "";
+		for(String s : actions){
+			if(s.startsWith("t:")){
+				s = s.substring(2);
+				ret+= s + ",";
+			}
+		}
+		return ret.substring(0,ret.length() - 1);
+	}
+	
+	public boolean changedCubie(){
+		for(String s : actions){
+			if(s.startsWith("c:")) return true;
+		}
+		return false;
+	}
+	
 }
