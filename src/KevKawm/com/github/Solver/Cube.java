@@ -427,6 +427,7 @@ public class Cube implements MouseListener {
 		Point p = e.getPoint();
 		int[] cubie = getCubie(p);
 		if (cubie != null) {
+			display.undoneActions.clear();
 			if (cubie[1] == 1 && cubie[2] == 1) {
 				String turn = "";
 				if (e.getButton() == 1) {
