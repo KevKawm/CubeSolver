@@ -20,6 +20,7 @@ public class Cube implements MouseListener {
 
 	public TileColor frontFace;
 	public TileColor topFace;
+	public TileColor selected;
 
 	int squareSize;
 	Dimension frameSize;
@@ -41,6 +42,7 @@ public class Cube implements MouseListener {
 			faces.add(i, l);
 		}
 		this.display = display;
+		selected = TileColor.white;
 	}
 
 	public Cube(TileColor frontFace, TileColor topFace) {
@@ -57,6 +59,7 @@ public class Cube implements MouseListener {
 			}
 			faces.add(i, l);
 		}
+		selected = TileColor.white;
 	}
 
 	public TileColor getFace(Side side) {
@@ -446,8 +449,8 @@ public class Cube implements MouseListener {
 				}
 				display.actions.add("t:" + turn);
 			} else {
-				display.actions.add("c:" + cubie[0] + "," + cubie[1] + "," + cubie[2] + "," + e.getButton());
-				changeColor(cubie, e.getButton());
+				display.actions.add("c:" + cubie[0] + "," + cubie[1] + "," + cubie[2] + "," + getColor(cubie).getInt() + "," + selected.getInt());
+				setPiece(cubie, selected);
 			}
 		}
 	}
@@ -605,7 +608,7 @@ public class Cube implements MouseListener {
 			} else {
 				String c = display.actions.get(display.actions.size() - 1).substring(2);
 				String[] cs = c.split(",");
-				changeColor(createArray(Integer.parseInt(cs[0]), Integer.parseInt(cs[1]), Integer.parseInt(cs[2])), 4 - Integer.parseInt(cs[3]));
+				setPiece(createArray(Integer.parseInt(cs[0]), Integer.parseInt(cs[1]), Integer.parseInt(cs[2])), TileColor.get(Integer.parseInt(cs[3])));
 			}
 			display.undoneActions.add(display.actions.get(display.actions.size() - 1));
 			display.actions.remove(display.actions.size() - 1);
@@ -619,7 +622,7 @@ public class Cube implements MouseListener {
 			} else {
 				String c = display.undoneActions.get(display.undoneActions.size() - 1).substring(2);
 				String[] cs = c.split(",");
-				changeColor(createArray(Integer.parseInt(cs[0]), Integer.parseInt(cs[1]), Integer.parseInt(cs[2])), Integer.parseInt(cs[3]));
+				setPiece(createArray(Integer.parseInt(cs[0]), Integer.parseInt(cs[1]), Integer.parseInt(cs[2])), TileColor.get(Integer.parseInt(cs[4])));
 			}
 			display.actions.add(display.undoneActions.get(display.undoneActions.size() - 1));
 			display.undoneActions.remove(display.undoneActions.get(display.undoneActions.size() - 1));
@@ -645,11 +648,12 @@ public class Cube implements MouseListener {
 
 	public String solve() {
 		String ret = "";
+		Cube scrambled = clone();
 		try {
 			if (isPossible()) {
 				Cube cubeClone = clone();
 				Cube cubeClone2 = clone();
-				String out = "The solving algorithm is: ";
+				String out = "";
 				String[] array = {};
 				String str = getSolve();
 				String turns = display.getTurns();
@@ -677,8 +681,14 @@ public class Cube implements MouseListener {
 						out += array[i] + ",";
 					}
 				}
+				
+				out = out.replace("I","'");
+				out = "The solving algorithm is: " + out;
+				
+				display.cube = scrambled;
+				
 				if (isSolved()) {
-					JOptionPane.showMessageDialog(null, "Make sure you are holding the cube with\n BLUE as face and YELLOW as top", "Solve", 1);
+					JOptionPane.showMessageDialog(null, "Make sure you are holding the cube with\n BLUE as front and YELLOW as top", "Solve", 1);
 					JOptionPane.showMessageDialog(null, out.endsWith(",") ? out.substring(0, out.length() - 1) : out, "Solve", 1);
 					display.actions.clear();
 					display.undoneActions.clear();
@@ -695,6 +705,7 @@ public class Cube implements MouseListener {
 			JOptionPane.showMessageDialog(null, "An error occured when solving.\nMake sure everything is entered correctly", "Error", 0);
 			e.printStackTrace();
 		}
+		
 		return ret;
 	}
 }

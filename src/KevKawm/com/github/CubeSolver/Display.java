@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +35,8 @@ public class Display extends JPanel implements Runnable {
 
 	final Display display = this;
 
+	Image background;
+	
 	public Display(Frame frame) {
 		this.frame = frame;
 
@@ -42,6 +45,8 @@ public class Display extends JPanel implements Runnable {
 
 	@Override
 	public void run() {
+		background = new ImageIcon(cl.getResource("KevKawm/com/github/Assets/background.png")).getImage();
+		
 		cube = new Cube(TileColor.blue, TileColor.yellow, this);
 
 		this.addMouseListener(cube);
@@ -94,6 +99,24 @@ public class Display extends JPanel implements Runnable {
 		this.addMouseListener(bh);
 		this.addMouseMotionListener(bh);
 
+		for(int i = 0; i < 6; i++){
+			final TileColor tileColor = TileColor.get(i);
+			
+			BufferedImage colorImage = new BufferedImage(20,20,BufferedImage.TYPE_INT_RGB);
+			Graphics graphics = colorImage.getGraphics();
+			graphics.setColor(tileColor.getColor());
+			graphics.fillRect(0, 0, 19, 19);
+			graphics.setColor(Color.BLACK);
+			graphics.drawRect(0, 0, 19, 19);
+			
+			bh.add(new Button(new Point(0,0),new Dimension(40,40), new Runnable(){
+				@Override
+				public void run(){
+					cube.selected = tileColor;
+				}
+			},colorImage,colorImage));
+		}
+		
 		moveButtons();
 
 		while (true) {
@@ -113,15 +136,29 @@ public class Display extends JPanel implements Runnable {
 		bh.buttons.get(1).p = new Point(((int) (frame.getWidth() / 5 * 0.2)), 50);
 		bh.buttons.get(2).d = new Dimension(frame.getWidth() / 5, frame.getWidth() / 10);
 		bh.buttons.get(2).p = new Point(((int) (frame.getWidth() / 5 * 0.2)), frame.getHeight() - 100 - bh.buttons.get(2).d.height);
+		for(int i = 3; i < 9; i++){
+			int j = i - 3;
+			Button b = bh.buttons.get(i);
+			b.p = new Point(frame.getWidth() - 200 + (j % 3) * 50,(int) (frame.getHeight() - 200 + Math.floor(j / 3) * 50));
+		}
 	}
 
 	@Override
 	public void paintComponent(Graphics g) {
 		g.clearRect(0, 0, frame.getWidth(), frame.getHeight());
+		for(int x = 0; x <= (int) Math.ceil(frame.getWidth() / 236); x++){
+			for(int y = 0; y <= (int) Math.ceil(frame.getHeight() / 236); y++){
+				g.drawImage(background,x*236,y*236,null);
+			}
+		}
 		cube.render(g, frame.getSize());
 		bh.drawButtons(g);
 		g.setColor(Color.BLACK);
 		g.drawString("Made by KevKawm", frame.width - 125, frame.height - 45);
+		g.setColor(cube.selected.getColor());
+		g.fillRect(frame.getWidth() - 150, frame.getHeight() - 250, 39, 39);
+		g.setColor(Color.BLACK);
+		g.drawRect(frame.getWidth() - 150, frame.getHeight() - 250, 39, 39);
 	}
 
 	public String getTurns() {
