@@ -330,7 +330,7 @@ public class Cube implements MouseListener {
 	}
 
 	public static boolean isCorner(int[] i) {
-		return !isEdge(i);
+		return (!isEdge(i) && !(i[1] == 1 && i[2] == 1));
 	}
 
 	public static boolean isEdge(int[] i) {
@@ -690,8 +690,6 @@ public class Cube implements MouseListener {
 				if (isSolved()) {
 					JOptionPane.showMessageDialog(null, "Make sure you are holding the cube with\n BLUE as front and YELLOW as top", "Solve", 1);
 					JOptionPane.showMessageDialog(null, out.endsWith(",") ? out.substring(0, out.length() - 1) : out, "Solve", 1);
-					display.actions.clear();
-					display.undoneActions.clear();
 				} else {
 					display.removeMouseListener(display.cube);
 					display.cube = cubeClone.clone();
